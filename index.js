@@ -46,6 +46,17 @@ app.get('/ideas/add', (req, res) => {
     res.render('ideas/add');
 });
 
+// Display Ideas listing
+app.get('/ideas', (req, res) => {
+    Idea.find({})
+      .sort({date: 'desc'})
+      .then(ideas => {
+        res.render('ideas/index', {
+            ideas: ideas
+        });
+      })
+});
+
 app.post('/ideas', (req, res) => {
     let err = [];
 
@@ -63,7 +74,15 @@ app.post('/ideas', (req, res) => {
             details: req.body.details
         });
     } else {
-        res.send('passed');
+        const idea = {
+            title: req.body.title,
+            details: req.body.details
+        };
+        new Idea(idea)
+          .save()
+          .then(idea => {
+              res.redirect('/ideas');
+          });
     }
 });
 
