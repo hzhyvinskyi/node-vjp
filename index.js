@@ -1,6 +1,7 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 
 const app = express();
@@ -28,6 +29,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+// Method override middleware
+app.use(methodOverride('_method'));
+
 // Index route
 app.get('/', (req, res) => {
     const title = 'WELCOME!';
@@ -41,9 +45,54 @@ app.get('/about', (req, res) => {
     res.render('about');
 });
 
-// Add idea form
+// Add Idea form
 app.get('/ideas/add', (req, res) => {
     res.render('ideas/add');
+});
+
+// Edit Idea form
+app.get('/ideas/edit/:id', (req, res) => {
+    Idea.findOne({
+        _id: req.params.id
+    })
+      .then(idea => {
+          res.render('ideas/edit', {
+              idea: idea
+          });
+      });
+});
+
+// Edit form process
+app.put('/ideas/:id', (req, res) => {
+    let err = [];
+
+    if (!req.body.title) {
+        err.push({text: 'Please add a title'});
+    }
+    if (!req.body.details) {
+        err.push({text: 'Please add some details'});
+    }
+
+    if (err.length) {
+        res.render('ideas/add', {
+            err: err,
+            title: req.body.title,
+            details: req.body.details
+        });
+    } else {
+        Idea.findOne({
+            _id: req.params.id
+        })
+        .then(idea => {
+            idea.title = req.body.title;
+            idea.details = req.body.details;
+
+            idea.save()
+                .then(idea => {
+                    res.redirect('/ideas');
+                });
+        });
+    }
 });
 
 // Display Ideas listing
