@@ -67,18 +67,18 @@ router.get('/edit/:id', (req, res) => {
 
 // Edit form process
 router.put('/:id', (req, res) => {
-    let err = [];
+    let errors = [];
 
     if (!req.body.title) {
-        err.push({text: 'Please add a title'});
+        errors.push({text: 'Please add a title'});
     }
     if (!req.body.details) {
-        err.push({text: 'Please add some details'});
+        errors.push({text: 'Please add some details'});
     }
 
-    if (err.length) {
+    if (errors.length) {
         res.render('ideas/add', {
-            err: err,
+            errors: errors,
             title: req.body.title,
             details: req.body.details
         });

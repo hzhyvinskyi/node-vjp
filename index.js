@@ -1,5 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
 const bodyParser = require('body-parser');
@@ -44,6 +45,9 @@ app.use(session({
 
 // Connect flash middleware
 app.use(flash());
+
+// Static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Define global variables for messages
 app.use(function(req, res, next) {
