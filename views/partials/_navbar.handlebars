@@ -16,21 +16,24 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/users/login">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/users/register">Register</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown">
-                    Video Ideas
-                </a>
-                <div class="dropdown-menu">
-                    <a href="/ideas" class="dropdown-item">Ideas</a>
-                    <a href="/ideas/add" class="dropdown-item">Add an idea</a>
-                </div>
-            </li>
+            {{#if user}}
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown">
+                        Video Ideas
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="/ideas" class="dropdown-item">Ideas</a>
+                        <a href="/ideas/add" class="dropdown-item">Add an idea</a>
+                    </div>
+                </li>
+            {{else}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/users/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users/register">Register</a>
+                </li>
+            {{/if}}
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search">

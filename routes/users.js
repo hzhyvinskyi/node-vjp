@@ -12,11 +12,21 @@ router.get('/login', (req, res) => {
     res.render('users/login');
 });
 
+// Login form POST
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect: '/ideas',
+        failureRedirect: '/users/login',
+        failureFlash: true
+    })(req, res, next);
+});
+
+// Register form GET
 router.get('/register', (req, res) => {
     res.render('users/register');
 });
 
-// Register Form POST
+// Register form POST
 router.post('/register', (req, res) => {
     let errors = [];
 
