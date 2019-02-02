@@ -9,17 +9,20 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Load routes
 const ideas = require('./routes/ideas');
 const users = require('./routes/users');
 
+// DB config
+const db = require('./config/database');
+
 // Passport Config
 require('./config/passport')(passport);
 
 // Connect to mongoose
-mongoose.connect('mongodb://localhost/vjp-dev', {
+mongoose.connect(db.mongoURI, {
     useNewUrlParser: true,
 })
   .then(() => console.log('MongoDB was successfully connected!'))
