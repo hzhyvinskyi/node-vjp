@@ -2,9 +2,9 @@
   "name": "node-vjp",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index"
+    "start": "node app"
   },
   "repository": {
     "type": "git",

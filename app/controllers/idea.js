@@ -1,14 +1,10 @@
-const express = require('express');
 const mongoose = require('mongoose');
-const router = express.Router();
-const {ensureAuthenticated} = require('../helpers/auth');
 
 // Load Idea Model
 require('../models/Idea');
 const Idea = mongoose.model('ideas');
 
-// Display Idea listing
-router.get('/', ensureAuthenticated, (req, res) => {
+exports.idea_index = (req, res) => {
     Idea.find({user: req.user.id})
       .sort({date: 'desc'})
       .then(ideas => {
@@ -16,15 +12,13 @@ router.get('/', ensureAuthenticated, (req, res) => {
             ideas: ideas
         });
       })
-});
+}
 
-// Add Idea form
-router.get('/add', ensureAuthenticated, (req, res) => {
+exports.idea_create = (req, res) => {
     res.render('ideas/add');
-});
+}
 
-// Store Idea
-router.post('/', ensureAuthenticated, (req, res) => {
+exports.idea_store = (req, res) => {
     let err = [];
 
     if (!req.body.title) {
@@ -53,10 +47,9 @@ router.post('/', ensureAuthenticated, (req, res) => {
               res.redirect('/ideas');
           });
     }
-});
+}
 
-// Edit Idea form
-router.get('/edit/:id', ensureAuthenticated, (req, res) => {
+exports.idea_edit = (req, res) => {
     Idea.findOne({
         _id: req.params.id
     })
@@ -70,10 +63,9 @@ router.get('/edit/:id', ensureAuthenticated, (req, res) => {
             });
           }   
       });
-});
+}
 
-// Edit form process
-router.put('/:id', ensureAuthenticated, (req, res) => {
+exports.idea_update = (req, res) => {
     let errors = [];
 
     if (!req.body.title) {
@@ -104,15 +96,12 @@ router.put('/:id', ensureAuthenticated, (req, res) => {
                 });
         });
     }
-});
+}
 
-// Delete Idea
-router.delete('/:id', ensureAuthenticated,(req, res) => {
+exports.idea_delete = (req, res) => {
     Idea.deleteOne({_id: req.params.id})
       .then(() => {
           req.flash('success_msg', 'Idea has been deleted successfully');
           res.redirect('/ideas');
       });
-});
-
-module.exports = router;
+}

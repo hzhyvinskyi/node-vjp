@@ -12,8 +12,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Load routes
-const ideas = require('./routes/ideas');
-const users = require('./routes/users');
+const ideas = require('./app/routes/ideas');
+const users = require('./app/routes/users');
 
 // DB config
 const db = require('./config/database');
@@ -28,9 +28,13 @@ mongoose.connect(db.mongoURI, {
   .then(() => console.log('MongoDB was successfully connected!'))
   .catch(err => console.log(err));
 
+app.set('views', path.resolve(__dirname, 'app/views'));
+
 // Handlebars middleware
 app.engine('handlebars', exphbs({
-    defaultLayout: 'main'
+    defaultLayout: 'main',
+    layoutsDir: 'app/views/layouts',
+    partialsDir: 'app/views/partials'
 }));
 app.set('view engine', 'handlebars');
 
